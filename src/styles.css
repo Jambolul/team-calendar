@@ -1,25 +1,30 @@
 :root {
-  --page: #1b1510;
-  --surface: #291e17;
-  --surface-raised: #35261c;
-  --surface-recessed: #211811;
-  --surface-hover: #4a3522;
-  --selected: #81571f;
-  --border: #62482c;
-  --border-strong: #98743e;
-  --text: #fff2d5;
-  --muted: #d4be98;
-  --subtle: #bca37c;
-  --accent: #e4b548;
-  --available-bg: #243c29;
-  --available-selected: #345334;
-  --available-accent: #a0d183;
-  --available-text: #c8e9ad;
-  --all-available-bg: #34502d;
-  --unavailable-bg: #4a2823;
-  --unavailable-selected: #63332b;
-  --unavailable-accent: #ed9780;
-  --unavailable-text: #ffc0a9;
+  --page: #29231e;
+  --page-glow: #9a77442b;
+  --surface: #1a1d21;
+  --surface-raised: #1e2227;
+  --surface-recessed: #171a1d;
+  --surface-hover: #2a3038;
+  --selected: #343c48;
+  --border: #34383e;
+  --border-strong: #49515b;
+  --text: #e5e7eb;
+  --muted: #aeb6c2;
+  --subtle: #8f9baa;
+  --accent: #b5c8e0;
+  --ink: #111315;
+  --available-bg: #1e2e26;
+  --available-selected: #244e38;
+  --available-accent: #7bd69d;
+  --available-text: #b4e4c6;
+  --all-available-bg: #22382b;
+  --unavailable-bg: #302328;
+  --unavailable-selected: #562e35;
+  --unavailable-accent: #eb8c98;
+  --unavailable-text: #f5b4bd;
+  --available-dot: #64ed93;
+  --unavailable-dot: #ff7185;
+  --unset-dot: #9ba6b5;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--text);
   background: var(--page);
@@ -28,7 +33,7 @@
   line-height: 1.5;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: radial-gradient(ellipse at 50% 0, #a06d2140, transparent 65%); min-height: 100vh; }
+body { margin: 0; background: radial-gradient(ellipse at 50% 0, var(--page-glow), transparent 65%); min-height: 100vh; }
 button { font: inherit; cursor: pointer; touch-action: manipulation; }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 button:disabled { cursor: wait; }
@@ -58,7 +63,7 @@ h2 { margin: 0; font-weight: 600; }
 .arrow, .today-button { border: 1px solid var(--border-strong); border-radius: 5px; background: var(--surface-raised); color: var(--text); }
 .arrow { width: 30px; height: 30px; font-size: 24px; line-height: 20px; }
 .today-button { padding: 5px 13px; font-size: 12px; }
-.arrow:hover, .today-button:hover { color: white; background: var(--surface-hover); }
+.arrow:hover, .today-button:hover { color: var(--text); background: var(--surface-hover); }
 .weekdays, .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .days { touch-action: none; user-select: none; }
 .day { touch-action: none; }
@@ -71,22 +76,22 @@ h2 { margin: 0; font-weight: 600; }
 .day:hover { z-index: 1; box-shadow: inset 0 0 0 2px var(--accent); }
 .day.available { background: var(--available-bg); color: var(--available-text); }
 .day.unavailable { background: var(--unavailable-bg); color: var(--unavailable-text); }
-.day.is-today .day-number { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--accent); color: var(--page); }
+.day.is-today .day-number { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--accent); color: var(--ink); }
 .day-top { display: flex; height: 24px; align-items: center; justify-content: space-between; }
 .day-number { font-size: 13px; font-weight: 600; }
 .day-status { display: flex; gap: 5px; align-items: center; margin-top: 6px; font-size: 11px; }
 .day-status > span:first-child { font-size: 15px; font-weight: 600; line-height: 1; }
 .day.unset .day-status { color: var(--subtle); }
-.team-dots { display: flex; align-items: center; gap: 8px; margin-top: auto; padding: 13px 2px 2px; }
-.team-dot { display: inline-block; flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; }
-.team-dot.available { background: var(--available-accent); }
-.team-dot.unavailable { background: var(--unavailable-accent); }
-.team-dot.unset { background: var(--subtle); }
-.active-dot { outline: 2px solid currentColor; outline-offset: 2px; }
+.team-dots { display: flex; align-items: center; gap: clamp(4px, .65vw, 9px); margin-top: auto; padding: 14px 2px 3px; }
+.team-dot { display: inline-block; flex-shrink: 0; width: clamp(8px, 1.1vw, 13px); height: clamp(8px, 1.1vw, 13px); border-radius: 50%; box-shadow: 0 0 0 1px #00000066; }
+.team-dot.available { background: var(--available-dot); }
+.team-dot.unavailable { background: var(--unavailable-dot); }
+.team-dot.unset { background: var(--unset-dot); }
+.active-dot { outline: 2px solid var(--text); outline-offset: 2px; }
 .empty-day { background: var(--surface-recessed); }
 .day.all-available { background: var(--all-available-bg); box-shadow: inset 0 0 0 2px var(--available-accent); }
 .day.all-available:hover { box-shadow: inset 0 0 0 3px var(--available-text); }
-.all-in { padding: 2px 7px; border-radius: 5px; background: var(--available-accent); color: var(--page); font-size: 12px; font-weight: 800; white-space: nowrap; }
+.all-in { padding: 2px 7px; border-radius: 5px; background: var(--available-accent); color: var(--ink); font-size: 12px; font-weight: 800; white-space: nowrap; }
 .error { padding: 12px 16px; border: 1px solid var(--unavailable-accent); border-radius: 8px; background: var(--unavailable-bg); color: var(--unavailable-text); font-size: 13px; }
 @media (min-width: 1400px) {
   main { padding-top: 48px; }
@@ -110,8 +115,8 @@ h2 { margin: 0; font-weight: 600; }
   .day-number { font-size: 12px; }
   .day-status { margin-top: 8px; }
   .status-text { display: none; }
-  .team-dots { gap: clamp(1px, .5vw, 4px); padding-left: 0; padding-right: 0; }
-  .team-dot { width: clamp(5px, 1.2vw, 9px); height: clamp(5px, 1.2vw, 9px); }
+  .team-dots { gap: clamp(1px, .4vw, 3px); padding-left: 0; padding-right: 0; }
+  .team-dot { width: clamp(5px, 1.7vw, 11px); height: clamp(5px, 1.7vw, 11px); }
   .active-dot { outline-offset: 1px; }
   .all-in { margin-left: auto; padding: 1px 3px; font-size: 10px; }
   .all-in > span { display: none; }
