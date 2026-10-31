@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createCalendarClient } from './calendar-client.js';
 
 const ROLES = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
-const LABEL = { available: 'Available', unavailable: 'Not available', unset: 'Not set' };
+const LABEL = { available: 'Available', unavailable: 'Not available', unsure: 'Unsure', unset: 'Not set' };
 const dateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 function initialRole() { try { return ROLES.includes(localStorage.role) ? localStorage.role : 'Top'; } catch { return 'Top'; } }
 
@@ -90,7 +90,7 @@ export default function App() {
     <section className="role-picker" aria-label="Choose your role">
       <div className="roles">{ROLES.map(value => <button key={value} aria-pressed={role === value} className={role === value ? 'selected' : ''} onClick={() => selectRole(value)}>{value}</button>)}</div>
       <div className="paint-options" aria-label="Choose availability to paint">
-        {[['available', 'Available', '✓'], ['unavailable', 'Unavailable', '×'], [null, 'Clear', '−']].map(([value, label, icon]) =>
+        {[['available', 'Available', '✓'], ['unavailable', 'Unavailable', '×'], ['unsure', 'Unsure', '?'], [null, 'Clear', '−']].map(([value, label, icon]) =>
           <button key={label} aria-pressed={paintStatus === value} className={`paint-option ${value || 'clear'} ${paintStatus === value ? 'selected' : ''}`} onClick={() => setPaintStatus(value)}><span aria-hidden="true">{icon}</span>{label}</button>
         )}
       </div>
@@ -111,7 +111,7 @@ export default function App() {
           onPointerDown={event => startStroke(event, key)}
           onClick={event => { if (event.detail === 0) paint(key); }}>
           <span className="day-top"><span className="day-number">{date.getDate()}</span>{allAvailable && <span className="all-in" title="All five players available"><span aria-hidden="true">✓ </span>5/5</span>}</span>
-          <span className="day-status"><span aria-hidden="true">{status === 'available' ? '✓' : status === 'unavailable' ? '×' : '–'}</span><span className="status-text">{LABEL[status]}</span></span>
+          <span className="day-status"><span aria-hidden="true">{status === 'available' ? '✓' : status === 'unavailable' ? '×' : status === 'unsure' ? '?' : '–'}</span><span className="status-text">{LABEL[status]}</span></span>
           <span className="team-dots" aria-label={ROLES.map(value => `${value}: ${LABEL[availability(key, value)]}`).join(', ')}>{ROLES.map(value => <span key={value} title={`${value}: ${LABEL[availability(key, value)]}`} className={`team-dot ${availability(key, value)} ${value === role ? 'active-dot' : ''}`} />)}</span>
         </button>;
       })}</div>

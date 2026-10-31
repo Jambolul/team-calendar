@@ -116,3 +116,23 @@ test('an older in-flight read cannot overwrite a completed save', async () => {
   await loading;
   assert.equal(client.snapshot().entries['2026-10-04'].Top, 'available');
 });
+
+
+test('unsure can be painted, saved, reloaded, replaced, and cleared', async () => {
+  const { client } = fixture();
+  await client.load('2026-10');
+  client.paint('2026-10-05', 'Mid', 'unsure');
+  assert.equal(client.snapshot().edits['2026-10-05/Mid'].status, 'unsure');
+  await client.flush();
+  await client.load('2026-10', true);
+  assert.equal(client.snapshot().entries['2026-10-05'].Mid, 'unsure');
+  client.paint('2026-10-05', 'Mid', 'available');
+  await client.flush();
+  assert.equal(client.snapshot().entries['2026-10-05'].Mid, 'available');
+  client.paint('2026-10-05', 'Mid', 'unsure');
+  await client.flush();
+  client.paint('2026-10-05', 'Mid', null);
+  await client.flush();
+  assert.deepEqual(client.snapshot().entries, {});
+  assert.equal(client.hasPending(), false);
+});

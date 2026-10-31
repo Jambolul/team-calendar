@@ -12,6 +12,7 @@ const entry = (date, role = 'Top', status = 'available') => ({ date, role, statu
 test('reject invalid dates, roles, and statuses', () => {
   for (const value of [null, {}, entry('2026-02-30'), entry('2026-10-15', 'Coach'), entry('2026-10-15', 'Mid', 'maybe')]) assert.equal(validEntry(value), false);
   assert.equal(validEntry(entry('2028-02-29', 'Jungle', null)), true);
+  assert.equal(validEntry(entry('2026-10-15', 'Mid', 'unsure')), true);
 });
 test('batch saves persist and preserve concurrent players and other months', async () => {
   const dir = await mkdtemp(path.join(tmpdir(), 'team-calendar-'));
@@ -23,12 +24,12 @@ test('batch saves persist and preserve concurrent players and other months', asy
     const save = (month, changes) => fetch(base, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ month, changes }) });
     const read = async month => (await (await fetch(`${base}?month=${month}`)).json()).entries;
     const results = await Promise.all([
-      save('2026-10', [entry('2026-10-15'), entry('2026-10-16')]),
+      save('2026-10', [entry('2026-10-15'), entry('2026-10-16'), entry('2026-10-16', 'Supp', 'unsure')]),
       save('2026-10', [entry('2026-10-15', 'Mid', 'unavailable')]),
       save('2026-11', [entry('2026-11-01', 'Supp')]),
     ]);
     assert.ok(results.every(result => result.ok));
-    const expected = { '2026-10-15': { Top: 'available', Mid: 'unavailable' }, '2026-10-16': { Top: 'available' } };
+    const expected = { '2026-10-15': { Top: 'available', Mid: 'unavailable' }, '2026-10-16': { Top: 'available', Supp: 'unsure' } };
     assert.deepEqual(await read('2026-10'), expected);
     const restored = (await createApp(file)).listen(0, '127.0.0.1');
     await new Promise(resolve => restored.once('listening', resolve));
@@ -39,7 +40,7 @@ test('batch saves persist and preserve concurrent players and other months', asy
     assert.equal((await fetch(base)).status, 400);
     await save('2026-10', [entry('2026-10-15', 'Top', null)]);
     assert.deepEqual(await read('2026-11'), { '2026-11-01': { Supp: 'available' } });
-    assert.deepEqual(await read('2026-10'), { '2026-10-15': { Mid: 'unavailable' }, '2026-10-16': { Top: 'available' } });
+    assert.deepEqual(await read('2026-10'), { '2026-10-15': { Mid: 'unavailable' }, '2026-10-16': { Top: 'available', Supp: 'unsure' } });
     const crossOrigin = await fetch(base, { method: 'PUT', headers: { Origin: 'https://example.com', 'Content-Type': 'application/json' }, body: '{}' });
     assert.equal(crossOrigin.status, 403);
   } finally {
