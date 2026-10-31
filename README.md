@@ -9,7 +9,7 @@ A simple availability calendar for a five-player League of Legends team. Choose 
 ## Features
 
 - Top, Jungle, Mid, ADC, and Supp roles.
-- Click or drag to mark days available, unavailable, or clear.
+- Click or drag to mark days available, unavailable, unsure, or clear.
 - Team status dots and highlighted **5/5** days.
 - dark UI with shared, persistent availability.
 - Batched saves and cached month data to reduce hosting usage. Press **↻** to fetch the latest changes.

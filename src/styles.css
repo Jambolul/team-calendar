@@ -22,6 +22,11 @@
   --unavailable-selected: #562e35;
   --unavailable-accent: #eb8c98;
   --unavailable-text: #f5b4bd;
+  --unsure-bg: #302d20;
+  --unsure-selected: #514625;
+  --unsure-accent: #d9be73;
+  --unsure-text: #ecd89e;
+  --unsure-dot: #f2d46f;
   --available-dot: #64ed93;
   --unavailable-dot: #ff7185;
   --unset-dot: #9ba6b5;
@@ -47,6 +52,8 @@ h2 { margin: 0; font-weight: 600; }
 .paint-option span { font-size: 16px; line-height: 1; }
 .paint-option.available { color: var(--available-text); }
 .paint-option.unavailable { color: var(--unavailable-text); }
+.paint-option.unsure { color: var(--unsure-text); }
+.paint-option.unsure.selected { background: var(--unsure-selected); border-color: var(--unsure-accent); box-shadow: inset 0 0 0 1px var(--unsure-accent); }
 .paint-option.available.selected { background: var(--available-selected); border-color: var(--available-accent); box-shadow: inset 0 0 0 1px var(--available-accent); }
 .paint-option.unavailable.selected { background: var(--unavailable-selected); border-color: var(--unavailable-accent); box-shadow: inset 0 0 0 1px var(--unavailable-accent); }
 .paint-option.clear.selected { background: var(--selected); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); color: var(--text); }
@@ -76,6 +83,7 @@ h2 { margin: 0; font-weight: 600; }
 .day:hover { z-index: 1; box-shadow: inset 0 0 0 2px var(--accent); }
 .day.available { background: var(--available-bg); color: var(--available-text); }
 .day.unavailable { background: var(--unavailable-bg); color: var(--unavailable-text); }
+.day.unsure { background: var(--unsure-bg); color: var(--unsure-text); }
 .day.is-today .day-number { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--accent); color: var(--ink); }
 .day-top { display: flex; height: 24px; align-items: center; justify-content: space-between; }
 .day-number { font-size: 13px; font-weight: 600; }
@@ -86,6 +94,7 @@ h2 { margin: 0; font-weight: 600; }
 .team-dot { display: inline-block; flex-shrink: 0; width: clamp(8px, 1.1vw, 13px); height: clamp(8px, 1.1vw, 13px); border-radius: 50%; box-shadow: 0 0 0 1px #00000066; }
 .team-dot.available { background: var(--available-dot); }
 .team-dot.unavailable { background: var(--unavailable-dot); }
+.team-dot.unsure { background: var(--unsure-dot); }
 .team-dot.unset { background: var(--unset-dot); }
 .active-dot { outline: 2px solid var(--text); outline-offset: 2px; }
 .empty-day { background: var(--surface-recessed); }

@@ -4,7 +4,7 @@ export const validMonth = value => typeof value === 'string' && /^\d{4}-(0[1-9]|
 export function validEntry(entry) {
   if (!entry || typeof entry !== 'object') return false;
   const { date, role, status } = entry;
-  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !roles.includes(role) || !['available', 'unavailable', null].includes(status)) return false;
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !roles.includes(role) || !['available', 'unavailable', 'unsure', null].includes(status)) return false;
   const parsed = new Date(`${date}T12:00:00Z`);
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === date;
 }
